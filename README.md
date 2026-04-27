@@ -1,72 +1,117 @@
-# Biro Pipeline - CI/CD with AWS CodePipeline
+# CI/CD Pipeline with AWS CodePipeline
 
-## Overview
-A fully automated CI/CD pipeline that deploys a web application 
-to an EC2 instance using AWS CodePipeline, CodeBuild, 
-CloudFormation and CodeDeploy.
+A fully automated CI/CD pipeline that provisions cloud infrastructure and deploys a web application to an EC2 instance using core AWS DevOps services.
+
+---
 
 ## Architecture
-Source (CodeCommit) → Build (CodeBuild) → Infrastructure 
-(CloudFormation) → Manual Approval → Deploy (CodeDeploy)
+CodeCommit → CodeBuild → CloudFormation → Manual Approval → CodeDeploy
 
-## Prerequisites
-- AWS Account
-- IAM permissions for CodePipeline, CodeBuild, CodeDeploy, 
-  CloudFormation, EC2 and IAM
-- VPC with at least one subnet
+---
+
+## AWS Services Used
+
+| Service | Role |
+|---------|------|
+| AWS CodeCommit | Source code repository |
+| AWS CodeBuild | Build and test the application |
+| AWS CloudFormation | Provision EC2 infrastructure as code |
+| AWS CodeDeploy | Deploy application to EC2 instance |
+| AWS CodePipeline | Orchestrate the entire CI/CD workflow |
+| Amazon EC2 | Host the web application |
+| Amazon S3 | Store pipeline artifacts |
+| AWS IAM | Manage permissions across all services |
+
+---
 
 ## Pipeline Stages
 
-### 1. Source
-- Provider: AWS CodeCommit
-- Monitors the main branch for changes
+**1. Source**
+Monitors the main branch in CodeCommit. Any code push automatically triggers the pipeline.
 
-### 2. Build
-- Provider: AWS CodeBuild
-- Runs tests against index.html
-- Packages artifact for deployment
+**2. Build**
+CodeBuild runs the buildspec.yml which tests the application and packages it as an artifact for the next stage.
 
-### 3. CloudFormation
-- Creates EC2 instance, IAM role and Security Group
-- Instance is tagged as CodeDeployServer
+**3. CloudFormation**
+Provisions the EC2 instance, IAM role, and Security Group automatically using Infrastructure as Code.
 
-### 4. Manual Approval
-- Pipeline pauses for human review
-- Check EC2 instance in AWS Console under 
-  EC2 → Instances → CodeDeployServer for the public IP
+**4. Manual Approval**
+Pipeline pauses and waits for a human reviewer to approve before deployment proceeds.
 
-### 5. Deploy
-- Provider: AWS CodeDeploy
-- Deploys application to EC2 instance
+**5. Deploy**
+CodeDeploy picks up the build artifact and deploys it to the EC2 instance using the appspec.yml configuration.
 
-## Required IAM Roles
+---
+
+## Project Structure
+CI-CD-with-AWS-CodePipeline/
+├── index.html          # Web application
+├── buildspec.yml       # CodeBuild build instructions
+├── appspec.yml         # CodeDeploy deployment instructions
+├── template.yaml       # CloudFormation infrastructure template
+└── README.md           # Project documentation
+
+---
+
+## Infrastructure (CloudFormation)
+
+The `template.yaml` provisions the following resources automatically:
+
+- **EC2 Instance** — t2.micro running Amazon Linux 2
+- **IAM Role** — with CodeDeploy and SSM permissions
+- **Security Group** — allowing HTTP (80) and SSH (22) access
+- **Instance Profile** — attaches IAM role to EC2 instance
+- **Apache Web Server** — installed and configured via UserData
+- **CodeDeploy Agent** — installed and running on the instance
+
+> VPC and Subnet are passed as parameters making the template reusable across any AWS account.
+
+---
+
+## Key Files Explained
+
+**buildspec.yml**
+Tells CodeBuild to test the application and package all files as an artifact to hand off to CodePipeline.
+
+**appspec.yml**
+Tells CodeDeploy where to place the application files on the EC2 instance and which scripts to run before and after deployment.
+
+**template.yaml**
+CloudFormation template that provisions all required AWS infrastructure automatically — no manual resource creation needed.
+
+---
+
+## IAM Roles Required
+
 | Role | Purpose |
 |------|---------|
 | AWSCodePipelineServiceRole | Orchestrates all pipeline stages |
 | CodePipeline-CloudFormation-Role | Creates AWS resources via CloudFormation |
 | CodeDeployServiceRole | Manages CodeDeploy deployments |
-| BiroStack-EC2Role | Allows EC2 instance to access AWS services |
+| EC2Role | Allows EC2 instance to access AWS services |
 
-## Key Files
-| File | Purpose |
-|------|---------|
-| `buildspec.yml` | CodeBuild build instructions |
-| `template.yaml` | CloudFormation infrastructure template |
-| `appspec.yml` | CodeDeploy deployment instructions |
-| `index.html` | Web application |
+---
 
-## Infrastructure (CloudFormation)
-- EC2 instance: t2.micro
-- Region: us-east-1
-- VPC: vpc-03aec1134175388ea
-- Subnet: subnet-04e5817180c4561b4
-- Ports open: 80 (HTTP), 22 (SSH)
+## Screenshots
 
-## Troubleshooting
-Common issues encountered and fixes:
-- **IAM permissions errors** — Add missing permissions to the 
-  relevant role as indicated in the error message
-- **No BuildArtif in S3** — Ensure buildspec.yml has an 
-  artifacts section
-- **Subnet not found** — Specify SubnetId explicitly in 
-  CloudFormation template
+### Pipeline Execution
+![Pipeline](screenshots/pipeline.png)
+
+### CloudFormation Stack
+![CloudFormation](screenshots/cloudformation.png)
+
+### Deployed Application
+![App](screenshots/app.png)
+
+---
+
+## Author
+
+**Odubiro Olayemi**
+AWS Certified — Cloud Practitioner | Solutions Architect Associate | CloudOps Engineer Associate | KCNA
+GitHub: [@birostech]([https://github.com/Birostech](https://www.linkedin.com/in/olayemi-odubiro-3b1155142/))
+
+---
+
+## License
+MIT
