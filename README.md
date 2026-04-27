@@ -108,7 +108,7 @@ CloudFormation template that provisions all required AWS infrastructure automati
 ## Author
 
 **Odubiro Olayemi**
-AWS Certified — Cloud Practitioner | Solutions Architect Associate | CloudOps Engineer Associate | KCNA
+AWS Certified - Cloud Practitioner | Solutions Architect Associate | CloudOps Engineer Associate | KCNA
 GitHub: [@birostech]([https://github.com/Birostech](https://www.linkedin.com/in/olayemi-odubiro-3b1155142/))
 
 ---
