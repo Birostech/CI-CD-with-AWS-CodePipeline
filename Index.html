@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS CI/CD Pipeline Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #232F3E;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            padding: 50px;
+            max-width: 700px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #FF9900;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+
+        .status-card {
+            background: #2d3e50;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 5px solid #00c853;
+        }
+
+        .status-title {
+            color: #00c853;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .status-text {
+            color: #ffffff;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .pipeline-stages {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .stage {
+            background: #FF9900;
+            color: #232F3E;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .arrow {
+            color: #FF9900;
+            font-size: 18px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: #2d3e50;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .info-label {
+            color: #FF9900;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .footer {
+            color: #ffffff;
+            font-size: 12px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h1>Deployment Successful</h1>
+        <p class="subtitle">Automated CI/CD Pipeline on AWS</p>
+
+        <div class="status-card">
+            <div class="status-title">✅ Application is Live</div>
+            <div class="status-text">
+                This page was automatically deployed through a fully 
+                automated AWS CI/CD pipeline without any manual intervention.
+            </div>
+        </div>
+
+        <div class="pipeline-stages">
+            <span class="stage">CodeCommit</span>
+            <span class="arrow">→</span>
+            <span class="stage">CodeBuild</span>
+            <span class="arrow">→</span>
+            <span class="stage">CloudFormation</span>
+            <span class="arrow">→</span>
+            <span class="stage">Manual Approval</span>
+            <span class="arrow">→</span>
+            <span class="stage">CodeDeploy</span>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-label">Cloud Provider</div>
+                <div class="info-value">Amazon Web Services</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">Compute</div>
+                <div class="info-value">Amazon EC2</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">Infrastructure</div>
+                <div class="info-value">CloudFormation (IaC)</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">Region</div>
+                <div class="info-value">us-east-1</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Deployed via AWS CodePipeline &nbsp;|&nbsp; EC2 + CodeDeploy
+        </div>
+
+    </div>
+</body>
+</html>
